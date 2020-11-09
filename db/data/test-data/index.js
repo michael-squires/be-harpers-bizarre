@@ -3,11 +3,11 @@ const articleData = require("./articles");
 const userData = require("./users");
 const commentData = require("./comments");
 
-exports.testData = {
-  topicData: topicData,
-  articleData: articleData,
-  userData: userData,
-  commentData: commentData,
+module.exports = {
+  topicData,
+  articleData,
+  userData,
+  commentData,
 };
 
-console.log(this.testData);
+//console.log(this.testData);

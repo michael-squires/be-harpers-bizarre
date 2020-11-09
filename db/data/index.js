@@ -3,10 +3,9 @@ const devData = require("./development-data/index.js");
 
 const ENV = process.env.NODE_ENV || "development";
 
-const allData = {
+const data = {
   development: devData,
   test: testData,
 };
 
-console.log(allData[ENV]);
-module.exports = allData[ENV];
+module.exports = data[ENV]

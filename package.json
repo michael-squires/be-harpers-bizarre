@@ -25,10 +25,5 @@
   "dependencies": {
     "knex": "^0.21.12",
     "pg": "^8.4.2"
-<<<<<<< HEAD
   }
-=======
-  },
-  "devDependencies": {}
->>>>>>> 406d6ba070e4f6c289783a11a1d75732aa4fcfff
 }
