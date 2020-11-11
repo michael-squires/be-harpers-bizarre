@@ -6,9 +6,8 @@ exports.fetchUserByUsername = (username) => {
         .from('users')
         .where('username', '=', username)
         .then((users) => {
-            console.log('users in fetchUser model', users)
             if (users.length === 0) {
-                Promise.reject({
+                return Promise.reject({
                     status: 404,
                     msg: `${username} not found`
                 })

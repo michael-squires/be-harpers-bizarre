@@ -11,9 +11,9 @@ const {
 
 app.use(express.json());
 app.use('/api', apiRouter);
-app.all('/*', send404)
 
 app.use(handleCustomErrors)
 app.use(handleInternalErrors)
+app.all('/*', send404)
 
 module.exports = app

@@ -1,9 +1,9 @@
 exports.up = function (knex) {
-  console.log("Creating comments table...");
+  console.log("Tables have been created...");
   return knex.schema.createTable("comments", (commentsTable) => {
     commentsTable.increments("comment_id").primary();
     commentsTable.text("author").references("users.username");
-    commentsTable.integer("article_id").references("articles.article_id");
+    commentsTable.integer("article_id").references("articles.article_id").onDelete('SET NULL');
     commentsTable.integer("votes").default(0);
     commentsTable.timestamp("created_at");
     commentsTable.text("body");
@@ -11,6 +11,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  console.log("Removing comments table...");
   return knex.schema.dropTable("comments");
 };

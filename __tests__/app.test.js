@@ -39,7 +39,7 @@ describe('/api', () => {
                     })
                 })
         });
-        test.only('GET - status 404 - for a non existent user', () => {
+        test('GET - status 404 - for a non existent user', () => {
             return request(app)
                 .get('/api/users/nobody')
                 .expect(404)
@@ -47,28 +47,37 @@ describe('/api', () => {
                     expect(body.msg).toBe('nobody not found');
                 });
         });
-
-
-
-
-
-    });
-    describe('/missingRoute', () => {
-        test('status 404 - ALL methods', () => {
-            const allMethods = ['get', 'post', 'patch', 'put', 'delete'];
-            const methodPromises = allMethods.map(method => {
+        describe.only('./articles/:article_id', () => {
+            test('DELETE: status 204 no content for a successful deletion', () => {
+                return request(app).delete('/api/articles/7')
+                    .expect(204);
+            });
+            test('DELETE - status 404 - for a non existent user', () => {
                 return request(app)
-                [method]('/api/notAValidRoute')
+                    .delete('/api/articles/9999')
                     .expect(404)
                     .then(({ body }) => {
-                        expect(body.msg).toBe('Route not found')
+                        expect(body.msg).toBe('article 9999 not found');
                     });
             });
-            return Promise.all(methodPromises)
+
+        });
+        describe('/missingRoute', () => {
+            test('status 404 - ALL methods', () => {
+                const allMethods = ['get', 'post', 'patch', 'put', 'delete'];
+                const methodPromises = allMethods.map(method => {
+                    return request(app)
+                    [method]('/api/notAValidRoute')
+                        .expect(404)
+                        .then(({ body }) => {
+                            expect(body.msg).toBe('Route not found')
+                        });
+                });
+                return Promise.all(methodPromises)
+            });
         });
     });
 });
-
 
 
 
