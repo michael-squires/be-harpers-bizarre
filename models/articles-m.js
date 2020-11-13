@@ -12,6 +12,8 @@ exports.fetchArticles = () => {
         .count({ comment_count: 'comment_id' })
         .leftJoin('comments', 'articles.article_id', 'comments.article_id')
         .groupBy('articles.article_id')
+        .orderBy('created_at', 'desc')
+        .returning('*')
 }
 
 

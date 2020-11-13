@@ -192,13 +192,14 @@ describe('/api', () => {
                 })
         });
     });
-    describe('/articles', () => {
-        test.only('GET - 200 - returns array of articles including comment_count', () => {
+    describe.only('/articles', () => {
+        test('GET - 200 - returns array of articles including comment_count, sorted by created_at in descending order)', () => {
             return request(app)
                 .get('/api/articles')
                 .expect(200)
                 .then(({ body }) => {
-                    expect(body[0]).toMatchObject({
+                    const { articles } = body;
+                    expect(articles[0]).toMatchObject({
                         author: expect.any(String),
                         title: expect.any(String),
                         article_id: expect.any(Number),

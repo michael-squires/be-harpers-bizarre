@@ -19,14 +19,12 @@ exports.seed = function (knex) {
     .then(() => {
       return knex.insert(topicData).into("topics").returning("*");
     })
-    .then((topicRows) => {
+    .then(() => {
       return knex
         .insert(userData)
         .into("users")
-        .returning("*")
-        .then((usersRows) => {
+        .then(() => {
           const formattedArticles = formatTimeStamp(articleData);
-
           return knex
             .insert(formattedArticles)
             .into("articles")
@@ -41,8 +39,7 @@ exports.seed = function (knex) {
               return knex
                 .insert(formattedComments)
                 .into("comments")
-                .returning("*")
-                .then((commentRows) => {
+                .then(() => {
                   console.log('...and seeded');
                 });
             });
