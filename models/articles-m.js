@@ -1,18 +1,18 @@
 const connection = require('../db/connection');
 const { formatTimeStamp } = require('../db/utils/data-manipulation')
 
-exports.fetchArticles = () => {
-    console.log('hello fetchArticles')
+exports.fetchArticles = ({ sort_by, order, author, topic }) => {
+    console.log({ sort_by, order, author, topic })
     return connection
-        // SELECT articles.*, COUNT(comment_id) AS comment_count FROM articles
-        //LEFT JOIN comments ON articles.article_id = comments.article_id
-        //GROUP BY articles.article_id;
         .select('articles.*')
         .from('articles')
         .count({ comment_count: 'comment_id' })
         .leftJoin('comments', 'articles.article_id', 'comments.article_id')
         .groupBy('articles.article_id')
-        .orderBy('created_at', 'desc')
+        .orderBy(sort_by || 'created_at', order || 'desc')
+        .modify((query) => {
+            if (author) query.where('articles.author', '=', author)
+        })
         .returning('*')
 }
 

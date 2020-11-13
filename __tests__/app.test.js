@@ -199,6 +199,7 @@ describe('/api', () => {
                 .expect(200)
                 .then(({ body }) => {
                     const { articles } = body;
+                    expect(articles).toBeSortedBy('created_at', { descending: true })
                     expect(articles[0]).toMatchObject({
                         author: expect.any(String),
                         title: expect.any(String),
@@ -209,38 +210,35 @@ describe('/api', () => {
                     })
                 })
         });
-        test('GET - 200 - will return array of articles filtered by author, sorted by topic (ascending order)', () => {
+        test('GET - 200 - will return array of articles filtered by author, sorted by topic (ascending order) where those queries chained to request', () => {
             return request(app)
                 .get('/api/articles?author=rogersop&&sort_by=topic&&order=asc')
                 .expect(200)
                 .then(({ body }) => {
-                    expect(body[0]).toMatchObject({
-                        author: expect.any(String),
-                        title: expect.any(String),
-                        article_id: expect.any(Number),
-                        topic: expect.any(String),
-                        votes: expect.any(Number),
-                        comment_count: '13'
-                    })
+                    const { articles } = body;
+                    expect(articles.length).toBe(3)
+                    expect(articles.every(({ author }) => (author = 'rogersop'))).toBe(true)
+                    expect(articles).toBeSortedBy('topic')
                 })
-        });
-
+        })
     });
-    describe('/missingRoute', () => {
-        test('status 404 - ALL methods', () => {
-            const allMethods = ['get', 'post', 'patch', 'put', 'delete'];
-            const methodPromises = allMethods.map(method => {
-                return request(app)
-                [method]('/api/notAValidRoute')
-                    .expect(404)
-                    .then(({ body }) => {
-                        expect(body.msg).toBe('Route not found')
-                    });
-            });
-            return Promise.all(methodPromises)
+
+});
+describe('/missingRoute', () => {
+    test('status 404 - ALL methods', () => {
+        const allMethods = ['get', 'post', 'patch', 'put', 'delete'];
+        const methodPromises = allMethods.map(method => {
+            return request(app)
+            [method]('/api/notAValidRoute')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Route not found')
+                });
         });
+        return Promise.all(methodPromises)
     });
 });
+//});
 
 
 
