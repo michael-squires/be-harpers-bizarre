@@ -40,7 +40,7 @@ exports.seed = function (knex) {
                 .insert(formattedComments)
                 .into("comments")
                 .then(() => {
-                  console.log('...and seeded');
+                  // console.log('...and seeded');
                 });
             });
         });

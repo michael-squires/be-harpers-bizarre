@@ -135,7 +135,7 @@ describe('/api', () => {
                     expect(body.msg).toBe('I don\'t exist not found');
                 });
         });
-        xtest('POST - status 404 - for a non existent article', () => {
+        test.only('POST - status 404 - for a non existent article', () => {
             return request(app)
                 .post('/api/articles/666/comments')
                 .send({
@@ -192,7 +192,7 @@ describe('/api', () => {
                 })
         });
     });
-    describe.only('/articles', () => {
+    describe('/articles', () => {
         test('GET - 200 - returns array of articles including comment_count, sorted by created_at in descending order)', () => {
             return request(app)
                 .get('/api/articles')
@@ -222,7 +222,48 @@ describe('/api', () => {
                 })
         })
     });
-
+    describe('/comments/:comment_id', () => {
+        test('PATCH - status 201 - responds with the comment object with updated vote count', () => {
+            return request(app)
+                .patch('/api/comments/1')
+                .send({ inc_votes: 50 })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.comment_id).toBe(1)
+                    expect(body.votes).toEqual(66)
+                })
+        });
+        test('PATCH will decrease votes if sent negative number', () => {
+            return request(app)
+                .patch('/api/comments/1')
+                .send({ inc_votes: -50 })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.comment_id).toBe(1)
+                    expect(body.votes).toEqual(-34)
+                })
+        });
+        test('PATCH - status 404 - for a non existent comment', () => {
+            return request(app)
+                .patch('/api/comments/9999')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('comment 9999 not found');
+                });
+        });
+        test('DELETE: status 204 no content for a successful deletion', () => {
+            return request(app).delete('/api/comments/7')
+                .expect(204);
+        });
+        test('DELETE - status 404 - for a non existent comment', () => {
+            return request(app)
+                .delete('/api/comments/9999')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('comment 9999 not found');
+                });
+        });
+    });
 });
 describe('/missingRoute', () => {
     test('status 404 - ALL methods', () => {

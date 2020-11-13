@@ -2,7 +2,6 @@ const connection = require('../db/connection');
 const { formatTimeStamp } = require('../db/utils/data-manipulation')
 
 exports.fetchArticles = ({ sort_by, order, author, topic }) => {
-    console.log({ sort_by, order, author, topic })
     return connection
         .select('articles.*')
         .from('articles')

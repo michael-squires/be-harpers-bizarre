@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  console.log("Tables have been created...");
+  // console.log("Tables have been created...");
   return knex.schema.createTable("comments", (commentsTable) => {
     commentsTable.increments("comment_id").primary();
     commentsTable.text("author").references("users.username");

@@ -12,7 +12,6 @@ exports.getArticles = (req, res, next) => {
     const { sort_by, order, author, topic } = req.query
     fetchArticles({ sort_by, order, author, topic })
         .then(articles => {
-            console.log('articles in controller', articles)
             res.status(200).send({ articles })
         })
         .catch(next);
@@ -53,6 +52,7 @@ exports.patchArticleById = (req, res, next) => {
 exports.addCommentToArticle = (req, res, next) => {
     const { article_id } = req.params;
     const { username, body } = req.body;
+
     fetchUserByUsername(username)
         //if username does not exist will -> error handling chain
         .then(() => {
