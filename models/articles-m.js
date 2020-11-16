@@ -8,7 +8,7 @@ exports.fetchArticles = ({ sort_by, order, author, topic }) => {
             'articles.article_id',
             'articles.title',
             'articles.created_at',
-            'votes',
+            'articles.votes',
             'articles.topic',
             'articles.author'
         )
