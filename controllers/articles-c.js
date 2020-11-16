@@ -53,22 +53,11 @@ exports.patchArticleById = (req, res, next) => {
 exports.addCommentToArticle = (req, res, next) => {
     const { article_id } = req.params;
     const { username, body } = req.body;
-    return fetchUserByUsername(username)
-        .then(user => {
-            console.log('user in addcomment,user)})
-    //if username does not exist will -> error handling chain
-    return doesArticleExist(article_id)
-                .then((articleExists) => {
-                    if (!articleExists) {
-                        return Promise.reject({ status: 404, msg: `article ${article_id} not found` })
-                    } else {
-                        return createComment(article_id, username, body)
-                    }
-                })
-                .then(comment => {
-                    console.log('comment in addComment', comment)
-                    res.status(201).send(comment[0])
-                })
-                .catch(next);
-        }
+    return createComment(article_id, username, body)
+        .then(comment => {
+            console.log('comment in addComment', comment)
+            res.status(201).send(comment[0])
+        })
+        .catch(next);
+}
 

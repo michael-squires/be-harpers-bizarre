@@ -103,7 +103,7 @@ describe('/api', () => {
                 });
         });
     });
-    describe.only('/articles/article_id/comments', () => {
+    describe('/articles/article_id/comments', () => {
         test('POST - status 201 - comment created and returned', () => {
             return request(app)
                 .post('/api/articles/1/comments')
@@ -220,7 +220,15 @@ describe('/api', () => {
                     expect(articles.every(({ author }) => (author = 'rogersop'))).toBe(true)
                     expect(articles).toBeSortedBy('topic')
                 })
-        })
+        });
+        test('GET - 400 : Bad Request - if try to sort by a non-existent column', () => {
+            return request(app)
+                .get('/api/articles?sort_by=no_such_column')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad Request');
+                });
+        });
     });
     describe('/comments/:comment_id', () => {
         test('PATCH - status 201 - responds with the comment object with updated vote count', () => {
