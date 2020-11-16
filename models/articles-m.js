@@ -1,20 +1,38 @@
+const { routes } = require('../app');
 const connection = require('../db/connection');
 const { formatTimeStamp } = require('../db/utils/data-manipulation')
 
 exports.fetchArticles = ({ sort_by, order, author, topic }) => {
     return connection
-        .select('articles.*')
+        .select(
+            'articles.article_id',
+            'articles.title',
+            'articles.created_at',
+            'articles.topic',
+            'articles.author'
+        )
         .from('articles')
         .count({ comment_count: 'comment_id' })
         .leftJoin('comments', 'articles.article_id', 'comments.article_id')
         .groupBy('articles.article_id')
         .orderBy(sort_by || 'created_at', order || 'desc')
         .modify((query) => {
-            if (author) query.where('articles.author', '=', author)
+            if (author) query.where('articles.author', '=', author);
+            if (topic) query.where('articles.topic', '=', topic);
         })
         .returning('*')
 }
 
+exports.doesArticleExist = (article_id => {
+    return connection
+        .select('articles, title, created_at, votes, topic, author')
+        .from('articles')
+        .where({ article_id: article_id })
+        .returning('*')
+        .then(rows => {
+            return (rows.length)
+        })
+})
 
 exports.removeArticleById = (article_id) => {
     return connection('articles')
