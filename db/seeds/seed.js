@@ -12,7 +12,6 @@ const {
 } = require("../utils/data-manipulation");
 
 exports.seed = function (knex) {
-  // add seeding functionality here
   return knex.migrate
     .rollback()
     .then(() => knex.migrate.latest())
@@ -23,26 +22,28 @@ exports.seed = function (knex) {
       return knex
         .insert(userData)
         .into("users")
+    })
+    .then(() => {
+      const formattedArticles = formatTimeStamp(articleData);
+      return knex
+        .insert(formattedArticles)
+        .into("articles")
+        .returning("*")
+    })
+    .then((articleRows) => {
+      const articleRef = createArticleRef(articleRows);
+      const timeStampedComments = formatTimeStamp(commentData);
+      const formattedComments = formatComments(
+        timeStampedComments,
+        articleRef
+      );
+      return formattedComments;
+    })
+    .then((formattedComments) => {
+      return knex
+        .insert(formattedComments)
+        .into("comments")
         .then(() => {
-          const formattedArticles = formatTimeStamp(articleData);
-          return knex
-            .insert(formattedArticles)
-            .into("articles")
-            .returning("*")
-            .then((articleRows) => {
-              const articleRef = createArticleRef(articleRows);
-              const timeStampedComments = formatTimeStamp(commentData);
-              const formattedComments = formatComments(
-                timeStampedComments,
-                articleRef
-              );
-              return knex
-                .insert(formattedComments)
-                .into("comments")
-                .then(() => {
-                  // console.log('...and seeded');
-                });
-            });
         });
     });
 };

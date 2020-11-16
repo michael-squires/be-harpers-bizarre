@@ -103,7 +103,7 @@ describe('/api', () => {
                 });
         });
     });
-    describe('/articles/article_id/comments', () => {
+    describe.only('/articles/article_id/comments', () => {
         test('POST - status 201 - comment created and returned', () => {
             return request(app)
                 .post('/api/articles/1/comments')
@@ -135,7 +135,7 @@ describe('/api', () => {
                     expect(body.msg).toBe('I don\'t exist not found');
                 });
         });
-        test.only('POST - status 404 - for a non existent article', () => {
+        test('POST - status 404 - for a non existent article', () => {
             return request(app)
                 .post('/api/articles/666/comments')
                 .send({

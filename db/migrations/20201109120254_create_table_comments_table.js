@@ -6,7 +6,7 @@ exports.up = function (knex) {
     commentsTable.integer("article_id").references("articles.article_id").onDelete('SET NULL');
     commentsTable.integer("votes").default(0);
     commentsTable.timestamp("created_at");
-    commentsTable.text("body");
+    commentsTable.text("body").notNullable();
   });
 };
 
