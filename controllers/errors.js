@@ -7,18 +7,14 @@ exports.send405 = (req, res) => {
 };
 
 exports.handleSQLErrors = (err, req, res, next) => {
-    const badRequestCodes = ['42703', '22P02', '23502'];
-    const notFoundCodes = ['23503'];
+    const badRequestCodes = ['42703', '22P02', '23502', '23503'];
     if (badRequestCodes.includes(err.code)) {
         res.status(400).send({ msg: 'Bad Request' });
-    } else if (notFoundCodes.includes(err.code)) {
-        res.status(404).send({ msg: 'Not Found' });
     } else next(err);
 };
 
 
 exports.handleCustomErrors = (err, req, res, next) => {
-    console.log('customError error status', err.status)
     if (err.status) {
         res.status(err.status).send({ msg: err.msg })
     } else {

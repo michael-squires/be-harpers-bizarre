@@ -55,7 +55,6 @@ exports.addCommentToArticle = (req, res, next) => {
     const { username, body } = req.body;
     return createComment(article_id, username, body)
         .then(comment => {
-            console.log('comment in addComment', comment)
             res.status(201).send(comment[0])
         })
         .catch(next);

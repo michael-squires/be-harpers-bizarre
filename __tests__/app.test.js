@@ -123,28 +123,28 @@ describe('/api', () => {
                     })
                 });
         });
-        test('POST - status 404 if user does not exist', () => {
+        test('POST - status 400 if user does not exist', () => {
             return request(app)
                 .post('/api/articles/1/comments')
                 .send({
                     username: 'I don\'t exist',
                     body: 'totally random comment'
                 })
-                .expect(404)
+                .expect(400)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('I don\'t exist not found');
+                    expect(body.msg).toBe('Bad Request');
                 });
         });
-        test('POST - status 404 - for a non existent article', () => {
+        test('POST - status 400 - for a non existent article', () => {
             return request(app)
                 .post('/api/articles/666/comments')
                 .send({
                     username: 'lurker',
                     body: 'comment about article that does not exist'
                 })
-                .expect(404)
+                .expect(400)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('article 666 not found');
+                    expect(body.msg).toBe('Bad Request');
                 });
         });
         test('GET - status 200 - returns array of comments for the article specified, sorted by created_by in descending order ', () => {
