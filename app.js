@@ -10,6 +10,7 @@ const {
     handleInternalErrors
 } = require('./controllers/errors');
 
+app.use(express.static('public'));
 app.use(express.json());
 app.use('/api', apiRouter);
 app.all('/*', send404)
