@@ -1,4 +1,3 @@
-const { routes } = require('../app');
 const connection = require('../db/connection');
 const { formatTimeStamp } = require('../db/utils/data-manipulation')
 
