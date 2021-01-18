@@ -23,16 +23,13 @@ exports.fetchArticles = ({ sort_by, order, author, topic }) => {
         .returning('*')
 }
 
-exports.doesArticleExist = (article_id => {
+exports.fetchArticleById = (article_id) => {
     return connection
-        .select('articles, title, created_at, votes, topic, author')
+        .select('*')
         .from('articles')
         .where({ article_id: article_id })
         .returning('*')
-        .then(rows => {
-            return (rows.length)
-        })
-})
+}
 
 exports.removeArticleById = (article_id) => {
     return connection('articles')

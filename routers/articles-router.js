@@ -1,6 +1,7 @@
 const articlesRouter = require('express').Router();
 const {
     getArticles,
+    getArticleById,
     getArticleComments,
     deleteArticleById,
     patchArticleById,
@@ -11,6 +12,7 @@ articlesRouter.route('/')
     .get(getArticles)
 
 articlesRouter.route('/:article_id')
+    .get(getArticleById)
     .delete(deleteArticleById)
     .patch(patchArticleById)
 
@@ -19,5 +21,3 @@ articlesRouter.route('/:article_id/comments')
     .get(getArticleComments)
 
 module.exports = articlesRouter;
-
-//GET /api/articles

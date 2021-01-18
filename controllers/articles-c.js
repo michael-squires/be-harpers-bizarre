@@ -4,10 +4,8 @@ const {
     createComment,
     fetchArticleComments,
     fetchArticles,
-    doesArticleExist,
+    fetchArticleById,
 } = require('../models/articles-m');
-
-const { fetchUserByUsername } = require('../models/users-m');
 
 exports.getArticles = (req, res, next) => {
     const { sort_by, order, author, topic } = req.query
@@ -17,6 +15,15 @@ exports.getArticles = (req, res, next) => {
         })
         .catch(next);
 };
+
+exports.getArticleById = (req, res, next) => {
+    const { article_id } = req.params;
+    fetchArticleById(article_id)
+        .then(data => {
+            res.status(200).send(data[0])
+        })
+        .catch(next);
+}
 
 exports.getArticleComments = (req, res, next) => {
     const { article_id } = req.params;

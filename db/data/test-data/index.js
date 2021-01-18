@@ -10,4 +10,3 @@ module.exports = {
   commentData,
 };
 
-//console.log(this.testData);

@@ -49,6 +49,23 @@ describe('/api', () => {
         });
     });
     describe('/articles/:article_id', () => {
+        test('GET: status 200, returns article object', () => {
+            return request(app)
+                .get('/api/articles/6')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body).toEqual({
+                        article_id: 6,
+                        title: 'A',
+                        body: 'Delicious tin of cat food',
+                        votes: 0,
+                        topic: 'mitch',
+                        author: 'icellusedkars',
+                        created_at: '1998-11-20T12:21:54.000Z'
+                    })
+                }
+                )
+        });
         test('DELETE: status 204 no content for a successful deletion', () => {
             return request(app).delete('/api/articles/7')
                 .expect(204);
@@ -151,9 +168,9 @@ describe('/api', () => {
             return request(app)
                 .get('/api/articles/1/comments')
                 .expect(200)
-                .then(({ body }) => {
-                    expect(body.length).toBe(13)
-                    expect(Object.keys(body[0]))
+                .then(({ body: { comments } }) => {
+                    expect(comments.length).toBe(13)
+                    expect(Object.keys(comments[0]))
                         .toEqual(
                             expect.arrayContaining([
                                 'comment_id',
@@ -164,7 +181,7 @@ describe('/api', () => {
                                 'body'
                             ])
                         );
-                    expect(body).toBeSortedBy('created_at', { descending: true })
+                    expect.toBeSortedBy('created_at', { descending: true })
                 })
         });
         test('GET - returned array sorted in ascending order if ?order = asc added', () => {
