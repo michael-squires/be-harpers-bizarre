@@ -18,6 +18,6 @@ app.all('/*', send404)
 
 app.use(handleSQLErrors);
 app.use(handleCustomErrors);
-app.use(handleInternalErrors;)
+app.use(handleInternalErrors);
 
 module.exports = app
